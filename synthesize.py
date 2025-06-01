@@ -6,6 +6,10 @@ def synthesize_speech():
     aws_access_key = os.getenv("AWS_ACCESS_KEY_ID")
     aws_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
     bucket_name = os.getenv("AWS_S3_BUCKET")
+    upload_key = os.getenv("S3_UPLOAD_KEY")
+
+    if not all([aws_access_key, aws_secret_key, bucket_name, upload_key]):
+        raise EnvironmentError("Missing required environment variables.")
 
     # Setup clients
     polly = boto3.client('polly', region_name='us-east-1',
@@ -36,7 +40,7 @@ def synthesize_speech():
     s3.upload_file(
         Filename=output_file,
         Bucket=bucket_name,
-        Key="polly-audio/beta.mp3"
+        Key=upload_key
     )
 
 if __name__ == "__main__":
