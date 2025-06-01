@@ -1,0 +1,4 @@
+Welcome to Pixel Learning! This is a demo of our audio course content.
+Our focus is  on accessibility and automation, with an aim to deliver course content in audio format. 
+Our goal is to better serve users with visual impairments or those who prefer learning by listening.
+
