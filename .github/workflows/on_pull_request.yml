@@ -1,4 +1,4 @@
-name: On Pull Request
+name: Convert Text to Audio (Beta)
 
 on:
   pull_request:
@@ -8,21 +8,33 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Show Python version
-        run: python --version
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-      - name: List files in repo
-        run: ls -l
+      - name: Install dependencies
+        run: |
+          pip install boto3
 
-      - name: Run python synthesize.py
-        run: python synthesize.py
+      - name: Run Synthesis Script
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-          S3_UPLOAD_KEY: polly-audio/beta.mp3
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        run: |
+          python synthesize.py
+
+      - name: Upload Beta Audio
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws s3 cp output.mp3 s3://$AWS_S3_BUCKET/polly-audio/beta.mp3
