@@ -34,6 +34,7 @@ def synthesize_speech():
     )
 
     # Save the audio stream returned by Polly to a local MP3 file
+if "AudioStream" in response:
     output_file = "output.mp3"
     with open(output_file, 'wb') as f:
         f.write(response['AudioStream'].read())
@@ -44,6 +45,9 @@ def synthesize_speech():
         Bucket=bucket_name,
         Key=upload_key
     )
+
+else:
+    raise Exception("Polly did not return an audio stream.")
 
 # Run the function if this script is executed directly
 if __name__ == "__main__":
