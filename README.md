@@ -1,34 +1,35 @@
 # Pixel Learning Audio Pipeline
 
-##  What This Project Does
+## What This Project Does
 
-Automatically converts course text to speech and uploads it to Amazon S3 using AWS Polly.
+This project automates the process of converting course text into speech using Amazon Polly and uploads the resulting audio file to an Amazon S3 bucket. It uses GitHub Actions to handle automation for both beta testing and production publishing.
 
-##  How to Use
+## How It Works
 
 ### 1. Modify Text
 
-Edit `speech.txt` with your course content.
+Update the `speech.txt` file with the content you want to convert into speech.
 
 ### 2. Make a Pull Request
 
-Create a branch and push your changes. Open a pull request.
-
-- This will run the `on_pull_request.yml` workflow.
-- Audio will be uploaded to: `s3://pixel-learning-audio/polly-audio/beta.mp3`
+- Create a new branch, make your changes, and open a pull request to the `main` branch.
+- This will trigger the **Beta Workflow** (`on_pull_request.yml`).
+- The generated audio will be uploaded to the S3 path:  
+  `s3://pixel-learning-audio/polly-audio/beta.mp3`
 
 ### 3. Merge to Main
 
-After review, merge the PR.
+- After your pull request is approved and merged into `main`, the **Production Workflow** (`on_merge.yml`) will run.
+- The audio file will be uploaded to:  
+  `s3://pixel-learning-audio/polly-audio/prod.mp3`
 
-- This runs `on_merge.yml`.
-- Audio will be uploaded to: `s3://pixel-learning-audio/polly-audio/prod.mp3`
+## Setup Instructions
 
-##  AWS Setup
+### Requirements
 
-- Create an IAM user with `AmazonPollyFullAccess` and `AmazonS3FullAccess`.
-- Create an S3 bucket and note its name.
-- Save AWS keys as GitHub secrets.
+- Python 3.10
+- An AWS account with permissions for Amazon Polly and Amazon S3
+- A GitHub repository with GitHub Actions enabled
 
 ##  Verifying Audio Uploads
 
