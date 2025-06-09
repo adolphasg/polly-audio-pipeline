@@ -33,7 +33,7 @@ def synthesize_speech():
         VoiceId="Joanna"  # You can change the voice if desired
     )
 
-    # ✅ Validate response before using it
+    #  Validate response before using it
     if "AudioStream" in response:
         output_file = "output.mp3"
         with open(output_file, 'wb') as f:
